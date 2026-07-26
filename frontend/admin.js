@@ -59,23 +59,22 @@ elements.sessionForm.addEventListener('submit', async (e) => {
     }
 });
 
-function startTimer(expiresAtIso) {
+function startTimer() {
     if (sessionInterval) clearInterval(sessionInterval);
     
-    const expiresAt = new Date(expiresAtIso).getTime();
+    let remainingMs = 120000; // 2 minutes in milliseconds
     
     sessionInterval = setInterval(() => {
-        const now = new Date().getTime();
-        const diff = expiresAt - now;
+        remainingMs -= 1000;
         
-        if (diff <= 0) {
+        if (remainingMs <= 0) {
             clearInterval(sessionInterval);
             elements.sessionTimer.innerText = "EXPIRED";
             elements.sessionTimer.style.color = "var(--error)";
             showMessage('Session Code Expired', 'error');
         } else {
-            const mins = Math.floor(diff / 60000);
-            const secs = Math.floor((diff % 60000) / 1000);
+            const mins = Math.floor(remainingMs / 60000);
+            const secs = Math.floor((remainingMs % 60000) / 1000);
             elements.sessionTimer.innerText = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
         }
     }, 1000);
