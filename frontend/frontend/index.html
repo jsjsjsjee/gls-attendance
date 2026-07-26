@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GLS Attendance - Student</title>
+    <link rel="stylesheet" href="student.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo-container">
+            <!-- Ensure gls-attendance.png is moved/copied to the frontend folder or served properly -->
+            <img src="../gls-attendance.png" alt="GLS Logo" class="logo">
+        </div>
+
+        <h2>Student Attendance</h2>
+
+        <div id="lockout-screen" class="hidden">
+            <div class="success-icon">✅</div>
+            <h3>Attendance Marked</h3>
+            <p>Your screen is locked to prevent multiple submissions.</p>
+            <p><span id="timer">05:00</span></p>
+        </div>
+
+        <form id="attendance-form">
+            <div class="form-group">
+                <label for="enrollment">Enrollment Number</label>
+                <input type="text" id="enrollment" required placeholder="Enter your enrollment no">
+                <button type="button" id="btn-fetch" class="btn-secondary">Verify</button>
+            </div>
+            <div id="student-info" class="hidden">
+                <p><strong>Name:</strong> <span id="student-name"></span></p>
+                <p><strong>Division:</strong> <span id="student-division"></span></p>
+
+                <div class="form-group">
+                    <label for="code">Teacher Code (Valid for 2 mins)</label>
+                    <input type="text" id="code" required placeholder="Enter 6-digit code">
+                </div>
+
+                <button type="submit" class="btn-primary">Mark Present</button>
+            </div>
+
+            <div id="message" class="message hidden"></div>
+        </form>
+    </div>
+
+    <script src="student.js"></script>
+</body>
+
+</html>
