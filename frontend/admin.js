@@ -51,7 +51,7 @@ elements.sessionForm.addEventListener('submit', async (e) => {
         elements.sessionForm.classList.add('hidden');
         elements.activeSession.classList.remove('hidden');
         
-        startTimer(data.expiresAt);
+        startTimer(data.expires_at);
         showMessage('Session created successfully!', 'success');
         
     } catch (err) {
