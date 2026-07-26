@@ -1,6 +1,6 @@
 // CHANGE THIS URL TO YOUR LIVE RENDER BACKEND URL BEFORE DEPLOYING TO VERCEL
 // Example: const API_BASE = 'https://gls-attendance-backend.onrender.com/api';
-const API_BASE = 'https://gls-attendance.onrender.com/api';
+const API_BASE = 'https://gls-attendance-6r5f.vercel.app/api';
 
 let currentSessionId = null;
 let sessionInterval = null;
