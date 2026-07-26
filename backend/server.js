@@ -26,10 +26,12 @@ app.post('/api/admin/session', async (req, res) => {
 
     try {
         const result = await db.query(
-            `INSERT INTO sessions (subject, code, expires_at) VALUES ($1, $2, $3) RETURNING id, subject, code, expires_at`,
+            `INSERT INTO sessions (subject, code, expires_at) VALUES ($1, $2, $3) RETURNING id, subject, code`,
             [subject, code, expiresAt]
         );
-        res.json(result.rows[0]);
+        const sessionData = result.rows[0];
+        sessionData.expires_at = expiresAt; // Guarantee correct UTC string for frontend timer
+        res.json(sessionData);
     } catch (err) {
         res.status(500).json({ error: err.message });
     }
@@ -140,10 +142,14 @@ app.post('/api/student/mark', async (req, res) => {
         if (sessionResult.rows.length === 0) return res.status(404).json({ error: 'Invalid code' });
         
         const session = sessionResult.rows[0];
-        const now = new Date();
-        const expires = new Date(session.expires_at);
         
-        if (now > expires) {
+        // Have PostgreSQL check the time natively to prevent NodeJS timezone parsing bugs
+        const timeCheck = await db.query(
+            `SELECT expires_at > LOCALTIMESTAMP as is_valid FROM sessions WHERE id = $1`,
+            [session.id]
+        );
+        
+        if (!timeCheck.rows[0].is_valid) {
             return res.status(400).json({ error: 'Code has expired (2-minute window passed)' });
         }
 
